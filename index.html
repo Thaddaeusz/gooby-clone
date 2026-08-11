@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$GOOBY — Life is Good | Retro Comic Memecoin on Robinhood</title>
+<meta name="description" content="$GOOBY — a goofy, fruit-loving swamp frog turned community memecoin on Robinhood. Life is good." />
+<meta name="theme-color" content="#78D63C" />
+
+<!-- Open Graph / link preview -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="$GOOBY" />
+<meta property="og:title" content="$GOOBY — Life is Good" />
+<meta property="og:description" content="A weird little swamp frog. Community memecoin on Robinhood. Life is good." />
+<meta property="og:url" content="https://gooby-clone.vercel.app/" />
+<meta property="og:image" content="https://gooby-clone.vercel.app/assets/og-image.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="512" />
+<meta property="og:image:height" content="512" />
+<meta property="og:image:alt" content="$GOOBY — deadpan swamp frog" />
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="" />
+<meta name="twitter:title" content="$GOOBY — Life is Good" />
+<meta name="twitter:description" content="A weird little swamp frog. Community memecoin on Robinhood. Life is good." />
+<meta name="twitter:image" content="https://gooby-clone.vercel.app/assets/og-image.png" />
+
+<!-- Favicon / tab logo = main GOOBY image -->
+<link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32" />
+<link rel="icon" href="/assets/gooby.jpg" type="image/jpeg" sizes="any" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+<link rel="shortcut icon" href="/assets/favicon-32.png" />
+
+<!-- Fonts: Chewy (headings), Quicksand (body), Baloo 2 (buttons) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Chewy&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          cream:  '#FFF8D6',
+          gooby:  '#78D63C',
+          forest: '#235A1A',
+          orange: '#FF9A00',
+          coral:  '#FF5C5C',
+          ink:    '#141210'
+        },
+        fontFamily: {
+          head: ['Chewy', 'cursive'],
+          body: ['Quicksand', 'sans-serif'],
+          btn:  ['"Baloo 2"', 'cursive']
+        }
+      }
+    }
+  }
+</script>
+
+<!-- AOS -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+<style>
+  :root{
+    --cream:#FFF8D6; --gooby:#78D63C; --oggie:#78D63C; --forest:#235A1A;
+    --orange:#FF9A00; --coral:#FF5C5C; --ink:#141210; --white:#fff;
+    --gooby-face:url("/assets/gooby.jpg");
+    --paper-tex:url("/assets/paper-tex.jpg");
+  }
+
+  html{ scroll-behavior:smooth; }
+  body{
+    background-color:var(--cream);
+    color:var(--ink);
+    font-family:'Quicksand', sans-serif;
+    overflow-x:hidden;
+    position:relative;
+  }
+  ::selection{ background:var(--gooby); color:var(--ink); }
+
+  h1,h2,h3,.font-head{ font-family:'Chewy', cursive; font-weight:400; letter-spacing:.01em; }
+
+  /* ---------- Comic building blocks ---------- */
+  .ink{ border:4px solid var(--ink); }
+  .ink-3{ border:3px solid var(--ink); }
+  .hard{ box-shadow:7px 7px 0 0 var(--ink); }
+  .hard-sm{ box-shadow:4px 4px 0 0 var(--ink); }
+  .hard-lg{ box-shadow:12px 12px 0 0 var(--ink); }
+  .hard-gooby{ box-shadow:7px 7px 0 0 var(--gooby); }
+
+  .card{
+    background:var(--white); border:4px solid var(--ink);
+    border-radius:22px; box-shadow:8px 8px 0 0 var(--ink);
+  }
+
+  /* Buttons */
+  .btn{
+    font-family:'Baloo 2', cursive; font-weight:700; letter-spacing:.01em;
+    display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+    border:4px solid var(--ink); border-radius:999px; cursor:pointer;
+    padding:.7rem 1.5rem; line-height:1; text-align:center;
+    box-shadow:5px 5px 0 0 var(--ink);
+    transition:transform .16s cubic-bezier(.34,1.56,.64,1), box-shadow .16s ease, background .2s ease;
+  }
+  .btn:hover{ transform:translate(-2px,-4px) scale(1.03); box-shadow:8px 10px 0 0 var(--ink); }
+  .btn:active{ transform:translate(3px,3px) scale(.98); box-shadow:2px 2px 0 0 var(--ink); }
+  .btn-green{ background:var(--gooby); color:var(--ink); }
+  .btn-orange{ background:var(--orange); color:var(--ink); }
+  .btn-coral{ background:var(--coral); color:#fff; }
+  .btn-cream{ background:var(--cream); color:var(--ink); }
+  .btn-ink{ background:var(--ink); color:var(--cream); }
+
+  /* Speech bubble */
+  .speech{
+    position:relative; background:var(--white); border:5px solid var(--ink);
+    border-radius:34px; box-shadow:9px 9px 0 0 var(--ink);
+  }
+  .speech::before{ content:''; position:absolute; left:52px; bottom:-34px; width:0; height:0;
+    border:20px solid transparent; border-top:34px solid var(--ink); border-right:0; }
+  .speech::after{ content:''; position:absolute; left:60px; bottom:-20px; width:0; height:0;
+    border:14px solid transparent; border-top:24px solid var(--white); border-right:0; }
+  .speech.tail-right::before{ left:auto; right:52px; border-right:20px solid transparent; border-left:0; }
+  .speech.tail-right::after{ left:auto; right:60px; border-right:14px solid transparent; border-left:0; }
+
+  /* Gooby mascot face */
+  .gooby-face{ background:var(--gooby-face) center center / cover no-repeat; }
+
+  /* Halftone + dogears */
+  .halftone{ background-image:radial-gradient(var(--ink) 1.1px, transparent 1.5px); background-size:11px 11px; }
+  .tag{ font-family:'Baloo 2',cursive; font-weight:800; text-transform:uppercase; letter-spacing:.14em; }
+  .tape{ position:absolute; width:88px; height:26px; background:rgba(255,154,0,.55); border:1px dashed rgba(20,18,16,.45); }
+
+  .stroke-cream{ -webkit-text-stroke:3px var(--ink); paint-order:stroke fill; }
+
+  /* ---------- Animations ---------- */
+  @keyframes bob{ 0%,100%{ transform:translateY(0) rotate(-1.5deg);} 50%{ transform:translateY(-16px) rotate(1.5deg);} }
+  .anim-bob{ animation:bob 5s ease-in-out infinite; }
+
+  @keyframes wobble{ 0%,100%{ transform:rotate(-3deg);} 50%{ transform:rotate(3deg);} }
+  .sticker{ animation:wobble 3.4s ease-in-out infinite; transform-origin:center; }
+  .sticker.slow{ animation-duration:5s; }
+
+  @keyframes spinSlow{ from{ transform:rotate(0);} to{ transform:rotate(360deg);} }
+  .spin-slow{ animation:spinSlow 22s linear infinite; }
+
+  .bounce-hover{ transition:transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease; }
+  .bounce-hover:hover{ transform:translateY(-8px) rotate(-1deg) scale(1.02); }
+
+  .tex{ position:relative; isolation:isolate; }
+  .tex::before{
+    content:''; position:absolute; inset:0; z-index:-1; pointer-events:none;
+    background-image:var(--paper-tex); background-size:cover; background-position:center;
+    filter:grayscale(1) contrast(1.15) brightness(1.06);
+    mix-blend-mode:multiply; opacity:.6;
+  }
+
+  .nav-link{ position:relative; font-family:'Baloo 2',cursive; font-weight:700; }
+  .nav-link::after{ content:''; position:absolute; left:0; bottom:-5px; height:3px; width:0; background:var(--coral); transition:width .2s ease; }
+  .nav-link:hover::after,.nav-link:focus-visible::after{ width:100%; }
+
+  #toast{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(30px);
+    background:var(--ink); color:var(--cream); border:4px solid var(--ink); box-shadow:6px 6px 0 0 var(--gooby);
+    border-radius:16px; padding:.7rem 1.2rem; font-family:'Baloo 2',cursive; font-weight:700; z-index:10000;
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; max-width:90vw; text-align:center; }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  a:focus-visible,button:focus-visible{ outline:3px solid var(--coral); outline-offset:3px; border-radius:8px; }
+
+  .foil{ background:linear-gradient(120deg,#78D63C,#FF9A00,#FF5C5C,#78D63C); background-size:300% 300%; animation:foilShift 6s ease infinite; }
+  @keyframes foilShift{ 0%{ background-position:0% 50%;} 50%{ background-position:100% 50%;} 100%{ background-position:0% 50%;} }
+
+  .divider-zig{ height:22px; background:
+     linear-gradient(135deg, var(--ink) 25%, transparent 25%) -14px 0/28px 28px,
+     linear-gradient(225deg, var(--ink) 25%, transparent 25%) -14px 0/28px 28px; }
+
+  .text-gooby{ color:var(--gooby); }
+  .bg-gooby{ background-color:var(--gooby); }
+  .border-gooby{ border-color:var(--gooby); }
+
+  @media (max-width:640px){
+    .hard{ box-shadow:5px 5px 0 0 var(--ink);} .hard-lg{ box-shadow:7px 7px 0 0 var(--ink);}
+    .card{ box-shadow:6px 6px 0 0 var(--ink);} .speech{ box-shadow:6px 6px 0 0 var(--ink);}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .anim-bob,.sticker,.spin-slow,.foil{ animation:none !important; }
+    *{ transition-duration:.001ms !important; }
+  }
+</style>
+</head>
+
+<body class="font-body antialiased">
+<a id="top"></a>
+
+<!-- ============================ NAV ============================ -->
+<header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b-4 border-ink">
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2 shrink-0">
+      <img src="/assets/gooby.jpg" alt="Gooby" class="w-10 h-10 rounded-full ink-3 object-cover shrink-0 block bg-[#CCFF00]" width="40" height="40" />
+      <span class="font-head text-2xl sm:text-3xl text-forest">$GOOBY</span>
+    </a>
+    <ul class="hidden md:flex items-center gap-7 text-lg">
+      <li><a href="#timeline" class="nav-link">Timeline</a></li>
+      <li><a href="#lore" class="nav-link">Lore</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#community" class="nav-link">Swamp</a></li>
+    </ul>
+    <div class="flex items-center gap-3">
+      <span class="hidden sm:inline-flex items-center gap-1.5 bg-white ink-3 rounded-full pl-1.5 pr-3 py-1 text-sm font-btn font-bold" title="Built on Robinhood">
+        <img src="/assets/robinhood.png" alt="Robinhood logo" class="w-5 h-5 rounded-full object-contain bg-[#CCFF00]" /> Robinhood
+      </span>
+      <button type="button" class="btn btn-green !py-2 !px-4 text-base js-soon" data-soon="Coming Soon — gribbit!">Buy $GOOBY</button>
+      <button id="navToggle" class="md:hidden ink-3 rounded-xl bg-white w-11 h-11 flex items-center justify-center" aria-label="Open menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#141210" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div id="mobileMenu" class="md:hidden hidden bg-cream border-t-4 border-ink">
+    <ul class="px-6 py-4 space-y-3 text-xl font-btn font-bold">
+      <li><a href="#timeline" class="js-navclose">Timeline</a></li>
+      <li><a href="#lore" class="js-navclose">Lore</a></li>
+      <li><a href="#about" class="js-navclose">About</a></li>
+      <li><a href="#community" class="js-navclose">Swamp</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="relative overflow-hidden bg-gooby tex">
+  <div class="absolute -top-10 -left-10 w-72 h-72 rounded-full bg-white/20 blur-2xl"></div>
+  <div class="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-forest/25 blur-3xl"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-20 sm:pt-16 grid lg:grid-cols-2 gap-10 lg:gap-6 items-center">
+    <!-- Copy -->
+    <div class="text-center lg:text-left order-2 lg:order-1">
+      <div class="sticker inline-flex items-center gap-2 bg-white ink-3 rounded-full px-3 py-1 mb-5 text-sm hard-sm">
+        <span class="w-2.5 h-2.5 rounded-full bg-coral"></span>
+        <span class="tag text-xs">A weird little swamp frog</span>
+      </div>
+
+      <div class="speech text-left px-6 py-6 sm:px-8 sm:py-7 mb-8" data-aos="zoom-out">
+        <p class="tag text-orange text-xs mb-2">Straight from the swamp</p>
+        <h1 class="font-head text-4xl sm:text-5xl lg:text-6xl leading-[0.95] text-ink">
+          Life is<br><span class="text-gooby stroke-cream">good.</span>
+        </h1>
+        <p class="font-body text-lg sm:text-xl text-ink/80 mt-4">
+          Meet Gooby — a goofy, fruit-loving frog with an existential streak,
+          now a community memecoin. <span class="font-bold text-forest">$GOOBY</span> lives on Robinhood.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-4 justify-center lg:justify-start items-center">
+        <button type="button" class="btn btn-coral text-xl sm:text-2xl js-soon" data-soon="Coming Soon — gribbit!">
+          Buy $GOOBY
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <a href="#lore" class="btn btn-cream text-lg sm:text-xl">Read the Lore</a>
+      </div>
+
+      <!-- stat chips -->
+      <div class="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start">
+        <span class="bg-white ink-3 rounded-full px-4 py-1.5 font-btn font-bold text-sm hard-sm">1,000,000,000 supply</span>
+        <span class="bg-white ink-3 rounded-full px-4 py-1.5 font-btn font-bold text-sm hard-sm inline-flex items-center gap-1.5">
+          <img src="/assets/robinhood.png" alt="Robinhood" class="w-5 h-5 rounded-full object-contain bg-[#CCFF00]" /> Built on Robinhood
+        </span>
+        <span class="bg-white ink-3 rounded-full px-4 py-1.5 font-btn font-bold text-sm hard-sm">0 swamp taxes</span>
+      </div>
+
+      <!-- contract address -->
+      <div class="mt-6">
+        <p class="tag text-[11px] text-ink/70 mb-1">Contract Address</p>
+        <div class="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 bg-white ink-3 rounded-2xl px-3 py-2 hard-sm max-w-full">
+          <code class="font-mono text-xs sm:text-sm break-all font-bold text-forest">Coming Soon</code>
+          <button type="button" class="js-soon btn btn-green !py-1 !px-3 !text-sm !shadow-[3px_3px_0_0_var(--ink)]" data-soon="Coming Soon — gribbit!" aria-label="Contract address ? Coming Soon">Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Giant Gooby artwork -->
+    <div class="relative flex justify-center lg:justify-end order-1 lg:order-2" data-aos="fade-left">
+      <div class="relative anim-bob">
+        <span class="spin-slow absolute -z-10 -inset-6 rounded-full opacity-70"
+              style="background:repeating-conic-gradient(from 0deg, #FFF8D6 0 12deg, transparent 12deg 24deg);"></span>
+        <div class="card !rounded-[36px] overflow-hidden !shadow-[14px_14px_0_0_var(--ink)]" style="width:min(80vw,400px);height:min(80vw,400px);">
+          <span class="tape sticker" style="top:-12px;left:34px;transform:rotate(-8deg);"></span>
+          <span class="tape sticker slow" style="top:-12px;right:34px;transform:rotate(7deg);"></span>
+          <img src="/assets/gooby.jpg" alt="Gooby the frog" class="block w-full h-full object-cover" width="400" height="400" decoding="async" fetchpriority="high" />
+        </div>
+        <div class="sticker absolute -bottom-5 -left-3 sm:-left-8 bg-orange ink-3 rounded-2xl px-4 py-2 font-head text-xl sm:text-2xl -rotate-3 hard-sm">
+          gribbit!
+        </div>
+        <div class="sticker slow absolute -top-3 -right-2 bg-coral text-white ink-3 rounded-full w-16 h-16 flex items-center justify-center font-head text-center text-sm leading-none -rotate-6 hard-sm">
+          life is good
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="divider-zig"></div>
+</section>
+
+<!-- ============================ ROBINHOOD BADGE ============================ -->
+<section class="bg-cream border-b-4 border-ink py-5 px-4 sm:px-6">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+    <div class="card !rounded-2xl !p-3 flex items-center gap-3 hard-sm">
+      <img src="/assets/robinhood.png" alt="Robinhood logo" class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-contain ink-3 bg-[#CCFF00]" />
+      <div class="text-left">
+        <p class="tag text-[10px] text-ink/60">Chain</p>
+        <p class="font-head text-2xl sm:text-3xl text-forest leading-none">Robinhood</p>
+      </div>
+    </div>
+    <p class="font-btn font-bold text-ink/80 text-center sm:text-left max-w-md">
+      $GOOBY lives on <span class="text-forest">Robinhood</span> — same swamp energy, stock-app rails. Coming Soon.
+    </p>
+  </div>
+</section>
+
+<!-- ============================ MARQUEE ============================ -->
+<div class="bg-ink text-cream border-b-4 border-ink py-3 overflow-hidden whitespace-nowrap select-none">
+  <div class="js-marquee inline-block font-head text-2xl sm:text-3xl">
+    <span class="mx-6">$GOOBY</span><span class="mx-3 text-gooby">✦</span>
+    <span class="mx-6">LIFE IS GOOD</span><span class="mx-3 text-orange">✦</span>
+    <span class="mx-6">ON ROBINHOOD</span><span class="mx-3 text-coral">✦</span>
+    <span class="mx-6">GRIBBIT GRIBBIT</span><span class="mx-3 text-gooby">✦</span>
+    <span class="mx-6">$GOOBY</span><span class="mx-3 text-gooby">✦</span>
+    <span class="mx-6">LIFE IS GOOD</span><span class="mx-3 text-orange">✦</span>
+    <span class="mx-6">ON ROBINHOOD</span><span class="mx-3 text-coral">✦</span>
+    <span class="mx-6">GRIBBIT GRIBBIT</span><span class="mx-3 text-gooby">✦</span>
+  </div>
+</div>
+
+<!-- ============================ TIMELINE ============================ -->
+<section id="timeline" class="relative py-16 sm:py-24 px-4 sm:px-6 bg-cream tex">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14">
+      <p class="tag text-coral text-sm mb-1" data-aos="fade-up">A little swamp saga</p>
+      <h2 class="font-head text-4xl sm:text-6xl text-forest" data-aos="zoom-out">The Gooby Story</h2>
+    </div>
+
+    <div class="relative">
+      <div class="hidden sm:block absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1.5 bg-ink rounded-full"></div>
+
+      <div class="space-y-8 sm:space-y-2">
+        <div class="sm:grid sm:grid-cols-2 sm:gap-10 items-center" data-aos="fade-right">
+          <div class="sm:text-right sm:pr-10">
+            <div class="card bounce-hover p-5 inline-block text-left">
+              <span class="tag text-orange text-xs">Chapter 1</span>
+              <h3 class="font-head text-2xl text-ink mt-1">A shy little tadpole</h3>
+              <p class="text-ink/75 mt-1">Gooby starts life at the bottom of the jar — more interested in books than swimming, a little overlooked and a little existential. A frog with feelings.</p>
+            </div>
+          </div>
+          <div class="hidden sm:block"></div>
+        </div>
+
+        <div class="sm:grid sm:grid-cols-2 sm:gap-10 items-center" data-aos="fade-left">
+          <div class="hidden sm:block"></div>
+          <div class="sm:pl-10">
+            <div class="card bounce-hover p-5 inline-block">
+              <span class="tag text-orange text-xs">Chapter 2</span>
+              <h3 class="font-head text-2xl text-ink mt-1">He leaves his woeful past</h3>
+              <p class="text-ink/75 mt-1">Gooby packs up his troubles and sets off to find a better home — somewhere warm, green, and absolutely stuffed with snacks.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sm:grid sm:grid-cols-2 sm:gap-10 items-center" data-aos="fade-right">
+          <div class="sm:text-right sm:pr-10">
+            <div class="card bounce-hover p-5 inline-block text-left">
+              <span class="tag text-orange text-xs">Chapter 3</span>
+              <h3 class="font-head text-2xl text-ink mt-1">The swamp of plenty</h3>
+              <p class="text-ink/75 mt-1">He finds a lush swamp bursting with fruit and gorges himself silly: "the most delicious food I have ever eaten!" Gobble, gobble, slurp.</p>
+            </div>
+          </div>
+          <div class="hidden sm:block"></div>
+        </div>
+
+        <div class="sm:grid sm:grid-cols-2 sm:gap-10 items-center" data-aos="fade-left">
+          <div class="hidden sm:block"></div>
+          <div class="sm:pl-10">
+            <div class="card bounce-hover p-5 inline-block">
+              <span class="tag text-orange text-xs">Chapter 4</span>
+              <h3 class="font-head text-2xl text-ink mt-1">There is justice in nature</h3>
+              <p class="text-ink/75 mt-1">Belly full, heart at peace, Gooby leans back and decides the universe is basically fine. His whole philosophy fits in a bubble: <em>life is good.</em></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sm:grid sm:grid-cols-2 sm:gap-10 items-center" data-aos="fade-right">
+          <div class="sm:text-right sm:pr-10">
+            <div class="card bounce-hover p-5 inline-block text-left border-gooby" style="box-shadow:8px 8px 0 0 var(--gooby)">
+              <span class="tag text-forest text-xs">2026</span>
+              <h3 class="font-head text-2xl text-ink mt-1">$GOOBY hops onto Robinhood</h3>
+              <p class="text-ink/75 mt-1">Gooby leaps out of the comic and onto Robinhood as a community coin. Same frog, same fruit, same motto — now with a ticker. Life is good.</p>
+            </div>
+          </div>
+          <div class="hidden sm:block"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-zig bg-forest"></div>
+
+<!-- ============================ LORE ============================ -->
+<section id="lore" class="relative py-16 sm:py-24 px-4 sm:px-6 bg-forest text-cream overflow-hidden tex">
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-14">
+      <p class="tag text-gooby text-sm mb-1" data-aos="fade-up">Pages from the lost comic</p>
+      <h2 class="font-head text-4xl sm:text-6xl text-cream" data-aos="zoom-out">The Lore of Gooby</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 items-center mb-12">
+      <div class="card !bg-white overflow-hidden -rotate-1 bounce-hover" data-aos="fade-right">
+        <img src="/assets/lore-1.jpg" alt="Comic panel: Gooby finds happiness and gorges on delicious fruit." class="w-full h-auto block" loading="lazy" />
+      </div>
+      <div data-aos="fade-left">
+        <div class="speech !bg-cream text-ink px-6 py-5 mb-6">
+          <p class="text-xl leading-snug">Once upon a swamp, Gooby left his woeful past behind, found a home among the trees, and <strong>gorged himself on the most delicious fruits he'd ever eaten.</strong></p>
+        </div>
+        <p class="text-lg text-cream/85 leading-snug">His whole philosophy fits in a speech bubble: <span class="font-head text-2xl text-gooby">"Life is good!"</span> A little weird, a little existential — exactly the energy a memecoin needs.</p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 items-center mb-12">
+      <div class="order-2 md:order-1" data-aos="fade-right">
+        <div class="speech !bg-cream text-ink px-6 py-5">
+          <p class="text-xl leading-snug">"Bless my sad soul! What a <strong>strange place</strong> this is!" — Gooby, wandering into a swamp more wonderful and weird than anything in his little books.</p>
+        </div>
+      </div>
+      <div class="order-1 md:order-2 card !bg-white overflow-hidden rotate-1 bounce-hover" data-aos="fade-left">
+        <img src="/assets/lore-2.jpg" alt="Comic panel: Gooby marveling at a strange, beautiful storybook landscape." class="w-full h-auto block" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="card !bg-white text-ink overflow-hidden inline-block bounce-hover -rotate-1 mb-6" data-aos="zoom-in">
+        <img src="/assets/lore-3.jpg" alt="Comic panel: Gooby in a fantastical dream-city, musing on his lonely beginnings." class="w-full h-auto block max-w-md" loading="lazy" />
+      </div>
+      <p class="text-lg text-cream/85">Storybook landscapes, a shy tadpole who loved books more than swimming, and jokes that get weirdly philosophical. That's the flavor of $GOOBY — and somehow, still: <span class="font-head text-2xl text-gooby">life is good.</span></p>
+    </div>
+  </div>
+</section>
+
+<div class="divider-zig"></div>
+
+<!-- ============================ ABOUT ============================ -->
+<section id="about" class="relative py-16 sm:py-24 px-4 sm:px-6 bg-cream tex">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+      <p class="tag text-coral text-sm mb-1" data-aos="fade-up">Where the frog comes from</p>
+      <h2 class="font-head text-4xl sm:text-6xl text-forest" data-aos="zoom-out">Roots of the Frog</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <a href="https://lataco.com/matt-furie-interview" target="_blank" rel="noopener noreferrer"
+         class="card !p-0 overflow-hidden bounce-hover -rotate-1 group block" data-aos="fade-right">
+        <img src="/assets/about-interview.jpg" alt="Interview excerpt in which Matt Furie names R. Crumb among his favourite comic artists." class="w-full h-auto block" loading="lazy" />
+        <span class="block bg-coral text-white font-btn font-bold text-center py-2 text-sm group-hover:bg-orange transition-colors">Read the interview on LA TACO ↗</span>
+      </a>
+
+      <div data-aos="fade-left">
+        <div class="speech !bg-white text-ink px-6 py-6 mb-6">
+          <p class="text-lg sm:text-xl leading-snug">
+            Matt Furie created <strong>Pepe the Frog</strong> in 2005 for his comic <em>Boy's Club</em>.
+            While <strong>Robert Crumb's</strong> underground 1960s comics and various pop-culture styles
+            influenced Furie's overall artistic aesthetic, Pepe himself was an <strong>original creation</strong>
+            rather than an adaptation of a specific character named "Gooby."
+          </p>
+        </div>
+        <p class="text-ink/75 text-base ml-1">
+          $GOOBY simply tips its hat to that scrappy, hand-inked underground lineage — a weird little frog with a big, cozy heart.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ COMMUNITY ============================ -->
+<section id="community" class="relative py-16 sm:py-28 px-4 sm:px-6 overflow-hidden bg-forest tex">
+  <div class="relative z-10 max-w-4xl mx-auto text-center text-cream">
+    <div class="sticker inline-block mb-8" data-aos="zoom-out">
+      <div class="bg-orange ink rounded-2xl px-6 py-4 hard-lg -rotate-1">
+        <p class="tag text-ink/70 text-xs">Members only — all frogs welcome</p>
+        <h2 class="font-head text-3xl sm:text-5xl text-ink leading-none mt-1">Gooby's Swamp Clubhouse</h2>
+      </div>
+    </div>
+
+    <p class="text-lg sm:text-xl text-cream/90 max-w-xl mx-auto mb-10" data-aos="fade-up">
+      Pull up a lily pad. The swamp never sleeps — it just blows bubbles, posts memes, and waits for the next believer to hop in.
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-5 mb-12" data-aos="fade-up">
+      <a href="#" class="card !bg-white text-ink bounce-hover w-40 sm:w-44 p-5 flex flex-col items-center gap-2 js-soon" data-soon="X link coming soon ? gribbit!" role="button">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="#141210" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>
+        <span class="font-head text-xl">X / Twitter</span>
+        <span class="tag text-[10px] bg-gooby text-ink ink-3 rounded-full px-2 py-0.5">Coming Soon ↗</span>
+      </a>
+      <a href="https://t.me/" target="_blank" rel="noopener noreferrer" class="card !bg-white text-ink bounce-hover w-40 sm:w-44 p-5 flex flex-col items-center gap-2">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="#141210" aria-hidden="true"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+        <span class="font-head text-xl">Telegram</span>
+        <span class="tag text-[10px] bg-gooby text-ink ink-3 rounded-full px-2 py-0.5">Join ↗</span>
+      </a>
+      <button type="button" class="card !bg-white text-ink bounce-hover w-40 sm:w-44 p-5 flex flex-col items-center gap-2 js-soon" data-soon="Chart update coming soon — gribbit!">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#141210" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+        <span class="font-head text-xl">Live Chart</span>
+        <span class="tag text-[10px] bg-orange text-ink ink-3 rounded-full px-2 py-0.5">Soon ↗</span>
+      </button>
+    </div>
+
+    <button type="button" class="btn btn-coral text-xl sm:text-2xl js-soon" data-soon="Coming Soon — gribbit!" data-aos="zoom-in">
+      Hop in — Buy $GOOBY
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="relative bg-cream border-t-4 border-ink pt-10 pb-8 px-4 sm:px-6 overflow-hidden tex">
+  <div class="max-w-6xl mx-auto relative z-10">
+
+    <div class="grid sm:grid-cols-3 gap-5 mb-10">
+      <div class="card bounce-hover p-5 text-center -rotate-1">
+        <p class="tag text-coral text-xs mb-1">Amazing offer!</p>
+        <h3 class="font-head text-2xl text-ink">Grow Your Own Swamp</h3>
+        <p class="text-ink/70 text-sm mt-1">Just add water &amp; diamond hands. Results not guaranteed. Frogs sold separately.</p>
+        <span class="inline-block mt-3 tag text-[11px] bg-gooby ink-3 rounded-full px-3 py-1">Only 10¢*</span>
+      </div>
+      <div class="card bounce-hover p-5 text-center">
+        <p class="tag text-coral text-xs mb-1">As seen in the funny pages</p>
+        <h3 class="font-head text-2xl text-ink">X-Ray Chart Goggles</h3>
+        <p class="text-ink/70 text-sm mt-1">See the candles before they print!† Astonish your friends. Baffle your losses.</p>
+        <button type="button" class="inline-block mt-3 tag text-[11px] bg-orange ink-3 rounded-full px-3 py-1 js-soon" data-soon="Chart update coming soon — gribbit!">See the chart ↗</button>
+      </div>
+      <div class="card bounce-hover p-5 text-center rotate-1">
+        <p class="tag text-coral text-xs mb-1">Join the club</p>
+        <h3 class="font-head text-2xl text-ink">Secret Swamp Society</h3>
+        <p class="text-ink/70 text-sm mt-1">Membership includes: bubbles, memes, and one (1) sense of belonging.</p>
+        <a href="https://t.me/" target="_blank" rel="noopener noreferrer" class="inline-block mt-3 tag text-[11px] bg-coral text-white ink-3 rounded-full px-3 py-1">Mail us ↗</a>
+      </div>
+    </div>
+
+    <div class="card !bg-ink text-cream text-center py-8 mb-8">
+      <p class="font-head text-4xl sm:text-6xl text-gooby">THE END?</p>
+      <p class="tag text-cream/70 text-xs mt-2">…to be continued on Robinhood</p>
+      <div class="mt-5 inline-flex items-center gap-3 bg-white ink-3 rounded-2xl px-4 py-2">
+        <img src="/assets/robinhood.png" alt="Robinhood logo" class="w-10 h-10 rounded-lg object-contain bg-[#CCFF00]" />
+        <span class="font-head text-2xl text-forest">Robinhood</span>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+      <a href="#top" class="flex items-center gap-3">
+        <img src="/assets/gooby.jpg" alt="Gooby" class="w-12 h-12 rounded-full ink-3 object-cover block" width="48" height="48" />
+        <span class="font-head text-3xl text-forest">$GOOBY</span>
+      </a>
+      <div class="w-full md:w-auto text-center md:text-left">
+        <p class="tag text-[11px] text-ink/60 mb-1">Contract Address</p>
+        <div class="inline-flex flex-wrap items-center justify-center gap-2 bg-white ink-3 rounded-2xl px-3 py-2 max-w-full">
+          <code class="font-mono text-xs sm:text-sm break-all font-bold text-forest">Coming Soon</code>
+          <button type="button" class="js-soon btn btn-green !py-1 !px-3 !text-sm !shadow-[3px_3px_0_0_var(--ink)]" data-soon="Coming Soon — gribbit!" aria-label="Contract address ? Coming Soon">Soon</button>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#" class="hover:text-coral transition-colors js-soon" data-soon="X link coming soon ? gribbit!" aria-label="X / Twitter (coming soon)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>
+        </a>
+        <a href="https://t.me/" target="_blank" rel="noopener noreferrer" class="hover:text-gooby transition-colors" aria-label="Telegram">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="flex items-end justify-between gap-4 pt-6 border-t-4 border-ink">
+      <div class="max-w-2xl">
+        <p class="text-xs text-ink/60 leading-relaxed">
+          $GOOBY is a community meme coin for fun and frogs only — no intrinsic value, no promises, not financial advice.
+          Not affiliated with or endorsed by Matt Furie, Robinhood, or any exchange; all names/logos belong to
+          their owners and appear for informational purposes. *10¢ is a joke. †Goggles do not work. Always DYOR.
+        </p>
+        <p class="tag text-[11px] text-ink/50 mt-3">© 2026 $GOOBY · No.1 · Made with fruit &amp; existential dread</p>
+      </div>
+      <div class="shrink-0 text-center">
+        <div class="ink-3 rounded-md px-2 py-1 bg-white" aria-hidden="true"
+             style="background-image:repeating-linear-gradient(90deg,#141210 0 2px,transparent 2px 4px,#141210 4px 5px,transparent 5px 9px);width:96px;height:44px;"></div>
+        <span class="tag text-[10px] text-ink/60">$GOOBY · No.1</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (window.AOS) AOS.init({ duration: 650, easing: 'ease-out-cubic', once: true, offset: 60, disable: reduced });
+
+  /* Mobile nav */
+  var navToggle = document.getElementById('navToggle');
+  var mobileMenu = document.getElementById('mobileMenu');
+  if (navToggle && mobileMenu) {
+    navToggle.addEventListener('click', function () {
+      var open = mobileMenu.classList.toggle('hidden') === false;
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('.js-navclose').forEach(function (el) {
+      el.addEventListener('click', function () { mobileMenu.classList.add('hidden'); navToggle.setAttribute('aria-expanded','false'); });
+    });
+  }
+
+  /* Toast + copy */
+  var toast = document.getElementById('toast'), toastTimer;
+  function showToast(msg){ if(!toast) return; toast.textContent=msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(function(){toast.classList.remove('show');},2600); }
+  function copyText(t){
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t);
+    return new Promise(function(res,rej){ try{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='absolute'; ta.style.left='-9999px'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); res(); }catch(e){ rej(e);} });
+  }
+  document.querySelectorAll('.js-copy').forEach(function(btn){
+    var original=btn.textContent;
+    btn.addEventListener('click', function(){
+      copyText(btn.getAttribute('data-copy')||'').then(function(){ showToast('Contract copied! gribbit'); btn.textContent='Copied!'; setTimeout(function(){btn.textContent=original;},1500); })
+      .catch(function(){ showToast('Copy failed — long-press to copy.'); });
+    });
+  });
+
+  /* "Coming soon" toast */
+  document.querySelectorAll('.js-soon').forEach(function(btn){
+    btn.addEventListener('click', function(){ showToast(btn.getAttribute('data-soon') || 'Coming Soon — gribbit!'); });
+  });
+
+  /* Marquee seamless loop */
+  document.querySelectorAll('.js-marquee').forEach(function(el){
+    if (reduced) return;
+    var x = 0, w = el.scrollWidth / 2, speed = 0.6, raf;
+    function step(){ x -= speed; if (Math.abs(x) >= w) x = 0; el.style.transform = 'translateX(' + x + 'px)'; raf = requestAnimationFrame(step); }
+    step();
+    el.parentElement.addEventListener('mouseenter', function(){ cancelAnimationFrame(raf); });
+    el.parentElement.addEventListener('mouseleave', function(){ raf = requestAnimationFrame(step); });
+  });
+
+  if (!reduced && window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('#gallery article').forEach(function(card, i){
+      gsap.from(card, { scrollTrigger:{ trigger:card, start:'top 88%' }, y:30, scale:.9, rotation:(i%2?2:-2), opacity:0, duration:.5, ease:'back.out(1.6)' });
+    });
+  }
+})();
+</script>
+</body>
+</html>
