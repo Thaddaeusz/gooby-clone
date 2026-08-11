@@ -5,4 +5,4 @@
 - **CA:** Coming Soon
 - **X:** placeholder (waiting for link)
 
-**Live:** https://gooby.vercel.app
+**Live:** https://goobysite.vercel.app
